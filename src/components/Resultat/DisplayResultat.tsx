@@ -1,4 +1,4 @@
-import { Preference, PreferenceResponse } from "@/api/Preference/getPreference"
+import { Resultat, ResultatResponse } from "@/api/Resultat/getResultat"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { useLayoutEffect, useState } from "react"
 import { Hopital } from "@/api/Hopitaux/getHopitaux"
@@ -6,38 +6,36 @@ import { Service } from "@/api/Service/getService"
 import { getHopitalFromId } from "@/api/Hopitaux/getHopitalFromId"
 import { getServiceFromId } from "@/api/Service/getServiceFromId"
 
-type DisplayPreferenceProps = {
-    preference: PreferenceResponse
+
+type DisplayResultatProps = {
+    resultat: ResultatResponse
 }
 
-export function DisplayPreference({ preference }: DisplayPreferenceProps) {
+export function DisplayResultat({ resultat }: DisplayResultatProps) {
 
     return <Table className="w-2/3 mx-auto">
         <TableHeader>
             <TableRow>
                 <TableHead>Matricule</TableHead>
-                <TableHead>Année académique</TableHead>
                 <TableHead>Hopital</TableHead>
                 <TableHead>Service</TableHead>
-                <TableHead>Ordre</TableHead>
-                <TableHead>Type</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
             {
-                preference["hydra:member"].map((preferenceLigne) => {
-                    return <DisplaySinglePreference preference={preferenceLigne} key={preferenceLigne["@id"]} />
+                resultat["hydra:member"].map((resultatLigne) => {
+                    return <DisplaySingleResultat resultat={resultatLigne} key={resultatLigne["@id"]} />
                 })
             }
         </TableBody>
     </Table>
 }
 
-type DisplaySinglePreferenceProps = {
-    preference: Preference;
+type DisplaySingleResultatProps = {
+    resultat: Resultat;
 }
 
-function DisplaySinglePreference({ preference }: DisplaySinglePreferenceProps) {
+function DisplaySingleResultat({ resultat }: DisplaySingleResultatProps) {
     const [hopital, setHopital] = useState<Hopital | null>(null);
     const [service, setService] = useState<Service | null>(null);
     const [loading, setLoading] = useState(true);
@@ -46,8 +44,8 @@ function DisplaySinglePreference({ preference }: DisplaySinglePreferenceProps) {
     useLayoutEffect(() => {
         const initData = async () => {
 
-            const tmpHopital = await getHopitalFromId(preference.hopital);
-            const tmpService = await getServiceFromId(preference.service);
+            const tmpHopital = await getHopitalFromId(resultat.hopital);
+            const tmpService = await getServiceFromId(resultat.service);
             if (tmpHopital == null || tmpService == null) {
                 setError(true)
             } else {
@@ -62,12 +60,9 @@ function DisplaySinglePreference({ preference }: DisplaySinglePreferenceProps) {
         {
             service && hopital &&
             <TableRow>
-                <TableCell>{preference.matricule}</TableCell>
-                <TableCell>{preference.anacad}</TableCell>
+                <TableCell>{resultat.matricule}</TableCell>
                 <TableCell>{hopital.nomcourt}</TableCell>
                 <TableCell>{service.nom}</TableCell>
-                <TableCell>{preference.ordre}</TableCell>
-                <TableCell>{preference.typepref == 1 ? "Préférence" : "Exclusion"}</TableCell>
             </TableRow>
         }
     </>

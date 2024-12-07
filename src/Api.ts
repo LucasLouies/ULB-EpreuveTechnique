@@ -27,9 +27,9 @@ export class API {
         let request: RequestInit = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/ld+json',
                 'Authorization': auth,
-                Accept: 'application/json',
+                Accept: 'application/ld+json',
             }
         }
 

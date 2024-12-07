@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { Fragment, useLayoutEffect, useState } from "react";
 import { Headers } from "../Headers"
 import { HopitalResponse, getHopitaux } from "@/api/Hopitaux/getHopitaux";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
@@ -27,9 +27,9 @@ export function Hopitaux() {
             <>
                 {
                     hopitaux["hydra:member"].map((hopitalLigne) => {
-                        return <>
-                            <p className="w-full text-center">{hopitalLigne.nomcourt}</p>
-                        </>
+                        return <Fragment key={hopitalLigne["@id"]}>
+                            <p className="w-full text-center" >{hopitalLigne.nomcourt}</p>
+                        </Fragment>
                     })
                 }
                 <>

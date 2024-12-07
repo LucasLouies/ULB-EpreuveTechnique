@@ -22,7 +22,7 @@ export function DisplayPlace({ place }: DisplayPlaceProps) {
         <TableBody>
             {
                 place["hydra:member"].map((placeLigne) => {
-                    return <SinglePlace key={place["@id"]} place={placeLigne} />
+                    return <SinglePlace key={placeLigne["@id"]} place={placeLigne} />
                 })
             }
         </TableBody>
@@ -56,20 +56,12 @@ function SinglePlace({ place }: SinglePlaceProps) {
     }, [])
     return <>
         {
-            loading &&
-            <p>Chargement en cours</p>
-        }
-        {
             service && hopital &&
             <TableRow>
                 <TableCell>{hopital.nomcourt}</TableCell>
                 <TableCell>{service.nom}</TableCell>
                 <TableCell>{place.places}</TableCell>
             </TableRow>
-        }
-        {
-            error &&
-            <p>erreur lors du chargement des données</p>
         }
     </>
 }
